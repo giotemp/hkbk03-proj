@@ -39,6 +39,15 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::get('/dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/{user}/set-revisor',[AdminController::class, 'setRevisor'])->name('admin.setRevisor');
     Route::get('/{user}/set-writer',[AdminController::class, 'setWriter'])->name('admin.setWriter');
+
+    Route::put('/edit/{tag}/tag',[AdminController::class, 'editTag'])->name('admin.editTag');
+    Route::delete('/delete/{tag}/tag',[AdminController::class, 'deleteTag'])->name('admin.deleteTag');
+
+    Route::put('/edit/{category}/category',[AdminController::class, 'editCategory'])->name('admin.editCategory');
+    Route::delete('/delete/{category}/category',[AdminController::class, 'deleteCategory'])->name('admin.deleteCategory');
+
+    Route::post('/create/category',[AdminController::class, 'createCategory'])->name('admin.createCategory');
+
 });
 
 
@@ -50,3 +59,5 @@ Route::middleware('is_revisor')->group(function () {
     Route::get('/revisor/{article}/reject',[RevisorController::class, 'rejectArticle'])->name('revisor.rejectArticle');
     Route::get('/revisor/{article}/undo',[RevisorController::class, 'undoArticle'])->name('revisor.undoArticle');
 });
+
+Route::get('/article/search',[ArticleController::class,'search'])->name('article.search');
