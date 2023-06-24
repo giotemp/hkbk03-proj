@@ -9,9 +9,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{route('welcome')}}">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
+          @if (Auth::user()&&Auth::user()->is_writer)
+          <li class="nav-item"><a class="nav-link " href="{{route('article.create')}}">Crea Articolo</a></li>
+          @endif
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,6 +49,11 @@
               @if (Auth::user()->is_revisor)
               <li><a class="dropdown-item" href="{{route('revisor.dashboard')}}">Dashboard Revisor</a></li>
             @endif
+
+            
+            @if (Auth::user()->is_writer)
+            <li><a class="dropdown-item" href="{{route('writer.dashboard')}}">Dashboard Writer</a></li>
+          @endif
 
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#" 

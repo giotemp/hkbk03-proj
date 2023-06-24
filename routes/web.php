@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\RevisorController;
+use App\Http\Controllers\GoogleLoginController;
+use App\Http\Controllers\WriterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +25,15 @@ Route::get('/', [PublicController::class, 'homepage'])->name('welcome');
 Route::middleware('is_writer')->group(function () {
     Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/article/store', [ArticleController::class, 'store'])->name('article.store');
+    Route::get('/article/{article}/edit', [ArticleController::class, 'edit'])->name('article.edit');
+    Route::put('/article/{article}/update', [ArticleController::class, 'update'])->name('article.update');
+    Route::delete('/article/{article}/destroy',[ArticleController::class, 'destroy'])->name('article.destroy');
+
 });
 
 
 Route::get('/article/index', [ArticleController::class, 'index'])->name('article.index');
-Route::get('/article/show/{article}',[ArticleController::class, 'show'])->name('article.show');
+Route::get('/article/show/{article:slug}',[ArticleController::class, 'show'])->name('article.show');
 
 Route::get('article/category/{category}',[ArticleController::class, 'byCategory'])->name('article.byCategory');
 
@@ -50,6 +56,12 @@ Route::prefix('admin')->middleware('is_admin')->group(function () {
 
 });
 
+Route::prefix('writer')->middleware('is_writer')->group(function(){
+
+    Route::get('/dashboard',[WriterController::class,'dashboard'])->name('writer.dashboard');
+
+});
+
 
 
 Route::middleware('is_revisor')->group(function () {
@@ -61,3 +73,6 @@ Route::middleware('is_revisor')->group(function () {
 });
 
 Route::get('/article/search',[ArticleController::class,'search'])->name('article.search');
+
+Route::get('auth/google',[GoogleLoginController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback',[GoogleLoginController::class, 'handleGoogleCallback'])->name('auth.googleCallback');;
